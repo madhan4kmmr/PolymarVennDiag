@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+
+<head>
+
+  <title>ASSETS</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+   <script src="Components/webcomponentsjs/webcomponents-lite.js"></script>
+   <link rel="import" href="Components/paper-styles/paper-styles.html">
+   <link rel="import" href="Components/AssetsInfo/Assets-list.html">
+ 
+  <style>
+  
+  .assetdata {
+      font-family: "Roboto","Noto",sans-serif;
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 40px;
+      text-rendering: optimizelegibility;
+    }
+  
+  </style>
+
+</head>
+
+ <body class="fullbleed relative">
+	<assets-list class="fit" assetdata='' assetgraphdata=''></assets-list>
+</body>
+
+
+ <script>
+     addEventListener('WebComponentsReady',function(){
+		 var assetsInfodata = document.querySelector('assets-list');
+		 assetsInfodata.assetdata =[
+		     	                   {"ID":"1001","Assetname": "DELL LAPTOP","Serialnumber":"WECF-EWRE-4535-EECXVX","Installdate":"12-AUG-2015","icon":"images/avatar-01.svg","ManufacturerName":"DELL","Make":"2015","Model":"DD2GN016","OSName":"WINDOWS 10","Servicepack":"23452352"},
+		    	                   {"ID":"1002","Assetname": "LENOVO ESSENTAIL LAPTOP","Serialnumber":"XCVX-AAAAE-56465","Installdate":"06-AUG-2015","icon":"images/avatar-02.svg","ManufacturerName":"LENOVO","Make":"2014","Model":"G50-45","OSName":"WINDOWS 10","Servicepack":"67856874"},
+		    	                   {"ID":"1003","Assetname": "SAMSUNG LAPTOP","Serialnumber":"ASDAD-345345","Installdate":"02-AUG-2015","icon":"images/avatar-03.svg","ManufacturerName":"SAMSUNG","Make":"2014","Model":"NPE350E5C","OSName":"WINDOWS 10","Servicepack":"4655W46E"},
+		    	                   {"ID":"1004","Assetname": "SONY LAPTOP","Serialnumber":"56774-12313-4353453","Installdate":"13-AUG-2015","icon":"images/avatar-04.svg","ManufacturerName":"SONY","Make":"2015","Model":"VAIO E14123CN","OSName":"WINDOWS 10","Servicepack":"346363"},
+		    	                   {"ID":"1005","Assetname": "COMPAQ LAPTOP","Serialnumber":"5674756-435-SDFGSDG","Installdate":"10-JUN-2015","icon":"images/avatar-05.svg","ManufacturerName":"COMPAQ","Make":"2013","Model":"15-S001TU","OSName":"MAC X LION","Servicepack":"DFGDDFTDF5675"},
+		    	                   {"ID":"1006","Assetname": "ACER LAPTOP","Serialnumber":"AGR-SZDFZS","Installdate":"10-AUG-2015","icon":"images/avatar-05.svg","ManufacturerName":"ACER","Make":"2010","Model":"ASPIRE-V5","OSName":"WINDOWS 7","Servicepack":"TYUTU678-DSFG"},
+		    	                   {"ID":"1007","Assetname": "TOSHIBA LAPTOP","Serialnumber":"8SDFGSDG6","Installdate":"10-AUG-2015","icon":"images/avatar-05.svg","ManufacturerName":"TOSHIBA","Make":"2011","Model":"C840","OSName":"WINDOWS 8","Servicepack":"NMZSDF-WERT"},
+		    	                   {"ID":"1008","Assetname": "HP LAPTOP","Serialnumber":"TWRXZCVZ","Installdate":"10-AUG-2015","icon":"images/avatar-05.svg","ManufacturerName":"HP","Make":"2012","Model":"14R059TU","OSName":"WINDOWS 9","Servicepack":"SETDYWERY-2015"},
+		    	                   {"ID":"1009","Assetname": "IBM LAPTOP","Serialnumber":"OTYDSFG","Installdate":"10-AUG-2015","icon":"images/avatar-05.svg","ManufacturerName":"IBM","Make":"2013","Model":"THINKPAD","OSName":"WINDOWS VISTA","Servicepack":"SDFDGDSFG-5754-CXZV"}
+		    	                  ];
+		 assetsInfodata.assetgraphdata = [
+				 		{
+				 		"Aset1001": [       {"sets": ["0"], "label": "A", "size": "4000"},
+		                 					{"sets": ["1"], "label": "B", "size": "3000"},
+		                 					{"sets": ["0", "1"], "size": "832"}
+		         					   ],
+                		"Aset1002": [   {"sets": ["0"], "label": "A", "size": "7348"},
+	                 					{"sets": ["1"], "label": "B", "size": "5621"},
+	                 					{"sets": ["2"], "label": "C", "size": "7773"},
+	                 					{"sets": ["0", "1"], "size": "4832"},
+	         					        {"sets": ["0", "2"], "size": "2602"},
+	         					        {"sets": ["1", "2"], "size": "162"}
+	         					   ],
+	         			
+     					"Aset1003": [   {"sets": ["0"], "label": "A", "size": "7348"},
+  	                 					{"sets": ["1"], "label": "B", "size": "5621"},
+  	                 					{"sets": ["2"], "label": "C", "size": "7773"},
+  	                 					{"sets": ["0", "1"], "size": "4832"},
+  	         					        {"sets": ["0", "2"], "size": "2602"},
+  	         					        {"sets": ["1", "2"], "size": "162"}
+  	         					   ]
+	      	         					   
+			    		}];                                
+		    
+		});
+     
+     
+     
+     
+     
+     
+     
+     
+	 </script>
+ 
+
+  
+  
+</html>

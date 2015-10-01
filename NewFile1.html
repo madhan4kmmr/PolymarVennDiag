@@ -1,0 +1,97 @@
+<html>
+    <head>
+
+        <script type="text/javascript" src="https://www.google.com/jsapi">
+        </script>
+        <script type="text/javascript">
+           
+            google.load("visualization", "1", {
+                packages: ["corechart"]
+            });
+            var chart;
+
+            var drawChart = function() {
+              
+                var data = new google.visualization.DataTable();
+            
+                data.addColumn('string', 'Day');
+                data.addColumn('number', 'Cookies');
+                data.addColumn('number', 'Cakes');
+               
+                data.addRows(3);
+              
+                data.setValue(0, 0, 'Monday');
+                data.setValue(0, 1, 90);
+                data.setValue(0, 2, 75);
+               
+                data.setValue(1, 0, 'Tuesday');
+                data.setValue(1, 1, 40);
+                data.setValue(1, 2, 65);
+              
+                data.setValue(2, 0, 'Wednesday');
+                data.setValue(2, 1, 60);
+                data.setValue(2, 2, 35);
+              
+                chartElement = document.getElementById('chart');
+               
+                chart = new google.visualization.ColumnChart(chartElement);
+               
+                chart.draw(data, {
+                    width: 500,
+                    height: 300,
+                    title: 'Bakery Sales',
+                    vAxis: {
+                        minValue: 0,
+                        maxValue: 100
+                    }
+                });
+               
+                google.visualization.events.addListener(chart, 'onmouseover',
+                function(event) {
+                    document.getElementById('hover-text').innerHTML =
+                        event.row + ' ' + event.column;
+                });
+              
+                google.visualization.events.addListener(chart, 'onmouseout',
+                function(event) {
+                    document.getElementById('hover-text').innerHTML = "";
+                });
+              
+                google.visualization.events.addListener(chart, 'select',
+                function() {
+                    var selectData = chart.getSelection(),
+                        message = '',row,column;
+                    for (var i = 0; i < selectData.length; i++) {
+                        var info = selectData[i];
+                        row = info.row;
+                        column = info.column;
+                      
+                        if (row !== undefined && column !== undefined) {
+                            message += 'cell[' + row + ',' + column + ']=' +
+                            data.getValue(row, column) + ', ';
+                        }
+                      
+                        else if (row !== undefined ) {
+                           message += 'row=' + row + ', ';
+                        }
+                        
+                        else if (column !== undefined ) {
+                           message += 'column=' + column + ', ';
+                        }
+                    }
+                    alert (message);
+                 });
+            }
+          
+            google.setOnLoadCallback(drawChart);
+        </script>
+    </head>
+    <body>
+       
+        <div id="chart"></div>
+       
+        <p id="hover-text"></p>
+    </body>
+</html>
+
+ 

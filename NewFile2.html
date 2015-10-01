@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <script type="text/javascript">
+            setInterval(function() {
+               
+                var value = Math.floor(Math.random() * 100);
+             
+                var URL = 'https://chart.googleapis.com/chart?' +
+                          'cht=gom&' +            
+                          'chtt=Rate-a-Coder&' +  
+                          'chts=000000,18&' +     
+                          'chs=500x250&' +        
+                          'chxt=x,y&' +
+                          'chxl=0:|' + (100 - value) + '|1:|Good|Bad|Ugly&' +
+                          'chxs=0,000000,14,0,t|1,000000,14,0,t&' +
+                          'chco=00FF00,FFFF00,FF0000&' +
+                          'chd=t:' + value;
+               
+                var image = document.getElementById('chart');
+                image.setAttribute('src', URL);
+            }, 1000);
+        </script>
+    </head>
+    <body>
+        <!-- The image source will be changed once a second. -->
+        <img id="chart">
+    </body>
+</html>

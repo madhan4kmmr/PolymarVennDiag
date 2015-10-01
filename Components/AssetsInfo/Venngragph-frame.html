@@ -1,0 +1,241 @@
+
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="venngragph-frame">
+
+  <style>
+  :host {
+    display: block;
+    position: relative;
+  }
+
+  #iframe {
+    border: none;
+    display: block;
+    height: 450px;
+    position: absolute;
+    width: 550px;
+    outline: none;
+    overflow: hidden;
+  }
+  </style>
+
+  <template>
+    <iframe id="iframe" src="{{src}}" scrolling="no" frameBorder="0"></iframe>
+  </template>
+
+</dom-module>
+
+<script>
+Polymer({
+
+  is: 'venngragph-frame',
+
+  properties: {
+    /**
+     * If true, the element will automatically adjust its height to match that
+     * of a contained basic-framed-content element on the framed page.
+     *
+     * @attribute autoSize
+     * @type boolean
+     * @default true
+     */
+    venngraphdata: Array,
+    autoSize: {
+      observer: '_autoSizeChanged',
+      type: Boolean,
+      value: true
+    },
+    src: {
+      observer: '_srcChanged',
+      type: String
+    },
+    assetid: {
+  	  type :String,
+	  observer:'_assetidChanged'
+    }
+  },_assetidChanged: function(newValue,oldValue)
+  {
+    	console.log(">>Venngragph-frame_assetidChanged>>>>"+this.assetid);
+    	console.log(">>Src>>>>"+this.src);
+    	
+    	var routeSrc = this.src.split("?")[0];
+    	console.log(">>routeSrc>>>>"+routeSrc);
+    	this.src = routeSrc + "?assetinfoID="+this.assetid;
+  },
+
+  ready: function() {
+    window.addEventListener('resize', function() {
+      if (this.autoSize && this.clientWidth !== this._clientWidth) {
+       
+        //added by Madhan
+        this._postMessageToFrame(this.venngraphdata);
+      
+        this._clientWidth = this.clientWidth;
+      }
+    }.bind(this));
+
+    // Raise our own load event when the frame loads.
+    this.$.iframe.addEventListener('load', function() {
+    	console.log(">>Venngragph-frame_Load>>>>");
+      this.dispatchEvent(new CustomEvent('load'));
+      
+      //added by Madhan
+      this._postMessageToFrame(this.venngraphdata);
+      
+    }.bind(this));
+
+    // Listen for messages posted by the framed page.
+    window.addEventListener('message', function(event) {
+    	console.log(">>message_message>>>>");
+      // For security reasons, only handle messages with the same origin as the
+      // framed page.
+      if  (event.origin !== this._frameOrigin) {
+        return;
+      }
+      // We also check that the message (ostensibly) comes from the framed page.
+      // This can be spoofed, but isn't intended as a security measure. Rather,
+      // it's just a way that this component can indentify which messages are
+      // meant for it.
+      if (!event.data || event.data.source !== this.$.iframe.src) {
+        return;
+      }
+      switch (event.data && event.data.message) {
+
+        case 'framedContentResponse':
+          this._framedContentChanged(event.data.detail);
+          break;
+
+        case 'framedHeightResponse':
+          this._framedHeightChanged(event.data.detail);
+          break;
+
+        case 'framedWebComponentsReady':
+          this._framedWebComponentsReady();
+          break;
+
+      }
+    }.bind(this), false);
+  },
+
+  /**
+   * Reload the content of the frame.
+   *
+   * @method reload
+   */
+  reload: function() {
+	  console.log(">>Venngragph-frame_reload>>>>");
+    // We'd like to just invoke this.$.iframe.contentWindow.location.reload().
+    // However, as of 11/3/2014, IE chokes on that. We workaround that by
+    // forcing the src on the frame again, which reloads the frame.
+    this.$.iframe.src = this.src;
+  },
+
+  /**
+   * Pass the indicated content to the basic-framed-content element within the
+   * framed page.
+   *
+   * @method setFramedContent
+   * @param content The content to pass to the basic-framed-content element.
+   */
+  setFramedContent: function(content) {
+	  console.log(">>Venngragph-frame____setFramedContent>>>>");
+    this._pendingContent = content;
+    this._updateFramedContent();
+  },
+
+  _autoSizeChanged: function() {
+	  console.log(">>Venngragph-frame_______autoSizeChanged>>>>");
+    if (this.autoSize) {
+     
+    //added by Madhan
+      this._postMessageToFrame(this.venngraphdata);
+    
+    }
+  },
+
+  // Track the last known width of this element.
+  _clientWidth: null,
+
+  _framedContentChanged: function(framedContent) {
+	  console.log(">>Venngragph-frame______framedContentChanged>>>>");
+    var event = new CustomEvent('framedContentChanged', {
+      detail: framedContent
+    });
+    this.dispatchEvent(event);
+  },
+
+  _framedHeightChanged: function(framedHeight) {
+	  console.log(">>Venngragph-frame_____framedHeightChanged>>>>");
+    if (this.autoSize) {
+      this.style.minHeight = framedHeight + 'px';
+    }
+  },
+
+  _framedWebComponentsReady: function() {
+	  console.log(">>Venngragph-frame____framedWebComponentsReady>>>>");
+    this._frameReady = true;
+    var event = new CustomEvent('framedWebComponentsReady');
+    this.dispatchEvent(event);
+    this._updateFramedContent();
+  },
+
+  _frameReady: false,
+
+  // Content we want to write to the framed page when it's ready for it.
+  _pendingContent: null,
+
+  _srcChanged: function() {
+	  console.log(">>Venngragph-frame_srcChanged>>>>");
+    // Extract the origin from the src using an anchor tag as a parser.
+    var a = document.createElement('a');
+    a.href = this.src;
+    var origin = a.origin;
+    if (origin == undefined) {
+      /* IE 10/11 links don't expose an origin property. Get it ourselves. */
+      var originRegex = /(.*\/\/[^\/]+)\//; /* Everything up to first slash in path. */
+      var match = originRegex.exec(a.href);
+      if (match) {
+        origin = match[1];
+      }
+    }
+    this._frameOrigin = origin;
+    
+    //added by Madhan
+   // this._postMessageToFrame(this.venngraphdata);
+    
+    
+  },
+
+  _updateFramedContent: function() {
+	  
+	  console.log(">>Venngragph-frame___updateFramedContent>>>>");
+	  
+    if (this._frameReady && this._pendingContent != null) {
+      this._postMessageToFrame('setContent', this._pendingContent);
+      this._pendingContent = null;
+    }
+  },
+
+  _postMessageToFrame: function(message, detail) {
+	  
+	 console.log(">>Venngragph-frame__postMessageToFrame>>>>"+message);
+	  
+	if (!this._frameOrigin) {
+      // Not ready to post yet.
+      return;
+    }
+    var payload = {
+      message: message,
+      assetID: this.assetid
+    };
+    if (detail != null) {
+      payload.detail = detail;
+    }
+    if(this.$.iframe.contentWindow!=null)
+    	this.$.iframe.contentWindow.postMessage(payload, this._frameOrigin);
+
+  }
+
+});
+</script>
